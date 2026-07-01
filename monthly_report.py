@@ -1,6 +1,6 @@
 from db import connection, cursor
 
-def monthly_report():
+def monthly_report_terminal():
     month=input("Enter the month(YYYY:MM): ")
     query="""
     SELECT SUM(amount)
@@ -15,3 +15,19 @@ def monthly_report():
     if total is None:
         total=0
     print(f"\nTotal expenses for {month}:₹{total}")
+def monthly_report(month):
+    query="""
+    SELECT SUM(amount)
+    FROM expenses
+    WHERE DATE_FORMAT(expense_date, '%Y-%m') = %s
+    """
+    values=(month,)
+    cursor.execute(query,values)
+    result=cursor.fetchone()
+    total=result[0]
+
+    if total is None:
+        total=0
+    return total
+
+

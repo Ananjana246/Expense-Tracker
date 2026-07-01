@@ -1,6 +1,6 @@
 from db import connection, cursor
 
-def lowest_expense():
+def lowest_expense_terminal():
     query="""
     SELECT * 
     FROM expenses
@@ -19,3 +19,13 @@ def lowest_expense():
         print(f"Category    : {expense[2]}")
         print(f"Description : {expense[3]}")
         print(f"Date        : {expense[4]}")
+def lowest_expense():
+    query="""
+    SELECT * 
+    FROM expenses
+    ORDER BY amount ASC
+    LIMIT 1
+    """
+    cursor.execute(query)  
+    return cursor.fetchone()
+

@@ -1,6 +1,6 @@
 from db import connection, cursor
 
-def search_expense():
+def search_expense_terminal():
 
     category=input("Enter the category to search: ").lower()
     query="""
@@ -24,3 +24,13 @@ def search_expense():
                 f"Description : {expense[3]} \n "
                 f"Date        : {expense[4]}"
            )
+def search_expense(category):
+    query="""
+    SELECT *
+    FROM expenses 
+    WHERE category = %s
+    """
+    values=(category,)
+    cursor.execute(query,values)
+    return cursor.fetchall()
+

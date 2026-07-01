@@ -1,13 +1,13 @@
-from add_expense import add_expense
-from view_expense import view_expense
-from update_expense import update_expense
-from delete_expense import delete_expense
-from total_expense import total_expense
-from category_report import category_report
-from search_expense import search_expense
-from monthly_report import monthly_report
-from highest_expense import highest_expense
-from lowest_expense import lowest_expense
+from add_expense import add_expense_terminal
+from view_expense import view_expense_terminal
+from update_expense import update_expense_terminal
+from delete_expense import delete_expense_terminal
+from total_expense import total_expense_terminal
+from category_report import category_report_terminal
+from search_expense import search_expense_terminal
+from monthly_report import monthly_report_terminal
+from highest_expense import highest_expense_terminal
+from lowest_expense import lowest_expense_terminal
 
 while True:
     print("\n=====Expense Tracker=====")
@@ -26,31 +26,30 @@ while True:
     """ )
 
     choice=input("Enter your choice: ")
-
     if choice=="1":
         print("Add expense selected")
-        add_expense()
+        add_expense_terminal()
     elif choice=="2":
         print("View expenses selected")
-        view_expense()
+        view_expense_terminal()
     elif choice=="3":
         print("Update expenses selected")
-        update_expense()
+        update_expense_terminal()
     elif choice=="4":
         print("Delete expenses selected")
-        delete_expense()
+        delete_expense_terminal()
     elif choice=="5":
-        total_expense()
+        total_expense_terminal()
     elif choice=="6":
-        category_report()
+        category_report_terminal()
     elif choice=="7":
-        search_expense()
+        search_expense_terminal()
     elif choice=="8":
-        monthly_report()
+        monthly_report_terminal()
     elif choice=="9":
-        highest_expense()
+        highest_expense_terminal()
     elif choice=="10":
-        lowest_expense()
+        lowest_expense_terminal()
     elif choice=="11":
         print("Thank you for selecting Expense Tracker")
         break
