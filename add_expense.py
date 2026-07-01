@@ -1,32 +1,45 @@
-import mysql.connector
-import os
-from dotenv import load_detenv
-load_dotenv()
+from db import connection, cursor
+from datetime import datetime
 
-connection = mysql.connector.connect(
-    host=os.getenv("DB_HOST"),
-    user=os.getenv("DB_USER"),
-    password=os.getenv("DB_PASSWORD"),
-    database=os.getenv("DB_NAME")
-)
+def add_expense():
 
-cursor=connection.cursor()
+    while True:
+        try:
+            amount=float(input("Enter amount: "))
+            if amount <= 0:
+                print("Amount must be greater than 0.")
+                continue
+            break
+        except ValueError:
+            print("Please enter a valid number.")
+    
+    while True:
+        category=input("Enter category: ").strip().lower()
+        if category:
+            break
+        print("Category cannot be empty")
 
-amount=float(input("Enter the amount: "))
-category=input("Enter category: ")
-description=input("Enter the description: ")
-expense_date=input("Enter the date: ")
+    while True:
+        description=input("Enter description: ").strip()
+        if description:
+            break
+        print("Description cannot be empty")
 
-query="""
-INSERT INTO expenses(amount, category, description, expense_date)
-VALUES(%s, %s, %s, %s)
-"""
-values=(amount,category,description,expense_date)
+    while True:
+        expense_date=input("Enter date (YYYY-MM-DD): ")
+        try:
+            datetime.strptime(expense_date, "%Y-%m-%d")
+            break
+        except ValueError:
+            print("Invalid date format. Use YYYY-MM-DD.")
 
-cursor.execute(query, values)
-connection.commit()
+    query="""
+    INSERT INTO expenses(amount, category, description, expense_date)
+    VALUES(%s, %s, %s, %s)
+    """
+    values=(amount,category,description,expense_date)
 
-print("Expense added successfully!")
+    cursor.execute(query, values)
+    connection.commit()
 
-cursor.close()
-connection.close()
+    print("Expense added successfully!")

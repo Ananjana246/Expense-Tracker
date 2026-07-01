@@ -1,6 +1,6 @@
 import mysql.connector
 import os
-from dotenv import load_detenv
+from dotenv import load_dotenv
 load_dotenv()
 
 connection = mysql.connector.connect(
@@ -10,5 +10,6 @@ connection = mysql.connector.connect(
     database=os.getenv("DB_NAME")
 )
 
-if connection.is_connected():
-    print("Connected to MySQL successfully!")
+# if connection.is_connected():
+#     print("Connected to MySQL successfully!")
+cursor=connection.cursor()
