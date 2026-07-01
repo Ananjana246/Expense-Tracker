@@ -8,10 +8,6 @@ connection = mysql.connector.connect(
     user=os.getenv("DB_USER"),
     password=os.getenv("DB_PASSWORD"),
     database=os.getenv("DB_NAME")
-    # host="localhost",
-    # user="root",
-    # password="Ananjana@123",   
-    # database="expense_tracker"
 )
 
 if connection.is_connected():
