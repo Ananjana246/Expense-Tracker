@@ -5,7 +5,8 @@ def monthly_report_terminal():
     query="""
     SELECT SUM(amount)
     FROM expenses
-    WHERE DATE_FORMAT(expense_date, '%Y-%m') = %s
+    WHERE MONTH(expense_date)=%s
+    AND YEAR(expense_date)=YEAR(CURDATE())
     """
     values=(month,)
     cursor.execute(query,values)
@@ -15,13 +16,14 @@ def monthly_report_terminal():
     if total is None:
         total=0
     print(f"\nTotal expenses for {month}:₹{total}")
-def monthly_report(month):
+def monthly_report(month_number):
     query="""
     SELECT SUM(amount)
     FROM expenses
-    WHERE DATE_FORMAT(expense_date, '%Y-%m') = %s
+    WHERE MONTH(expense_date)=%s
+    AND YEAR(expense_date)=YEAR(CURDATE())
     """
-    values=(month,)
+    values=(month_number,)
     cursor.execute(query,values)
     result=cursor.fetchone()
     total=result[0]

@@ -9,27 +9,53 @@ from search_expense import search_expense
 from highest_expense import highest_expense
 from lowest_expense import lowest_expense
 from monthly_report import monthly_report
+from budget import save_budget,get_budget
 import pandas as pd
 
 
 st.title("Expense Tracker")
 st.write("Welcome to Expense Tracker")
-page=st.sidebar.selectbox(
-    "MENU",
-    [
-        "Add Expenses",
-        "View Expenses",
-        "Update Expenses",
-        "Delete Expenses",
-        "Total Expenses",
-        "Category Report",
-        "Search Expense",
-        "Highest Expense",
-        "Lowest Expense",
-        "Monthly Report"
-    ]
-)
-
+# page=st.sidebar.selectbox(
+#     "MENU",
+#     [
+#         "Add Expenses",
+#         "View Expenses",
+#         "Update Expenses",
+#         "Delete Expenses",
+#         "Total Expenses",
+#         "Category Report",
+#         "Search Expense",
+#         "Highest Expense",
+#         "Lowest Expense",
+#         "Monthly Report",
+#         "Budget Tracker"
+#     ]
+# )
+if "page" not in st.session_state:
+    st.session_state.page = "Home"
+if st.sidebar.button("Add Expense"):
+    st.session_state.page = "Add Expenses"
+if st.sidebar.button("View Expenses"):
+    st.session_state.page = "View Expenses"
+if st.sidebar.button("Update Expenses"):
+    st.session_state.page = "Update Expenses"
+if st.sidebar.button("Delete Expenses"):
+    st.session_state.page = "Delete Expenses"
+if st.sidebar.button("Total Expenses"):
+    st.session_state.page = "Total Expenses"
+if st.sidebar.button("Category Report"):
+    st.session_state.page = "Category Report"
+if st.sidebar.button("Search Expense"):
+    st.session_state.page = "Search Expense"
+if st.sidebar.button("Highest Expense"):
+    st.session_state.page = "Highest Expense"
+if st.sidebar.button("Lowest Expense"):
+    st.session_state.page = "Lowest Expense"
+if st.sidebar.button("Monthly Report"):
+    st.session_state.page = "Monthly Report"
+if st.sidebar.button("Budget Tracker"):
+    st.session_state.page = "Budget Tracker"
+page = st.session_state.page
 if page=="Add Expenses":
     amount=st.number_input(
         "Amount",
@@ -53,7 +79,7 @@ elif page=="View Expenses":
             "Expense Date"
         ]
     )
-    st.dataframe(df)
+    st.dataframe(df,hide_index=True)
 elif page=="Update Expenses":
     st.header("Update expenses")
     expense_id=st.number_input(
@@ -150,16 +176,57 @@ elif page=="Lowest Expense":
         st.warning("No expenses found.")
 elif page=="Monthly Report":
     st.header("Monthly Report")
-    month=st.text_input(
-        "Enter Month (YYYY-MM)",
-        placeholder="2026-07"
+    months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    ]
+
+    selected_month = st.selectbox(
+        "Select Month",
+        months
     )
-    if st.button("Monthly Report"):
-        total=monthly_report(month)
-        st.metric(
-            "Total Expense",
-            f"₹{total}"
-            )
+    month_number = months.index(selected_month) + 1
+    total=monthly_report(month_number)
+    st.metric(
+        f"{selected_month} Expenses",
+        f"₹{total}"
+        )
+elif page=="Budget Tracker":
+    st.header("Budget Tracker")
+    current_budget=get_budget()
+    budget=st.number_input(
+        "Monthly Budget",
+        min_value=0.0,
+        value=0.0
+    )
+    if st.button("Save Budget"):
+        save_budget(budget)
+        st.success("Budget saves successfully")
+        spent=total_expense()
+        if spent is None:
+            spent = 0
+        remaining=current_budget-float(spent)
+
+        col1,col2,col3=st.columns(3)
+        with col1:
+            st.metric("Budget",f"{current_budget}")
+        with col2:
+            st.metric("Spent",f"{spent}")
+        with col3:
+            st.metric("Remaining",f"{remaining}")
+        if remaining<0:
+            st.error(f"Budget exceeded by {abs(remaining)}")
+
  
 
 

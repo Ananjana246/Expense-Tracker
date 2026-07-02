@@ -17,6 +17,8 @@ def total_expense():
     query="""
     SELECT SUM(amount)
     FROM expenses
+    WHERE MONTH(expense_date)=MONTH(CURDATE())
+    AND YEAR(expense_date)=YEAR(CURDATE())
     """
     
     cursor.execute(query)
